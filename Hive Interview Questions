@@ -195,6 +195,14 @@ location "/tmp/hive/data/weather';
 
 19.What is a metastore in Hive? What is the default database provided by Apache Hive for metastore?
 
+Ans: 
+The Hive metastore is simply a relational database. It stores metadata related to the tables/schemas you create to easily query big data stored in HDFS. 
+When you create a new Hive table, the information related to the schema (column names, data types) is stored in the Hive metastore relational database.
+Derby is the default metastore in hive which supports only one user
+
+
+
+
 
 
 
