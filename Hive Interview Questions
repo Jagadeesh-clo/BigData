@@ -1,0 +1,203 @@
+1. What is the definition of Hive? What is the present version of Hive? 
+Ans: Hive is a Data Warehouse system which is used to analyze the structured data and build on top of Hadoop. 
+Hive mainly used to manage the data using SQL queries named as HQL ( Hive query language). It's main functionalities includes reading, writing and managing large datasets residing in distributed storage. 
+Using Hive, we can skip the requirement of the traditional approach of writing complex MapReduce programs. Hive supports, DDL,DML and User defined functions.
+
+Version -- Apache hive 3.1.2 ( released on april 2022 )
+
+2. Is Hive suitable to be used for OLTP systems? Why?
+Ans; No, hive does not support insert and update at row level. So it does not support OLTP system. 
+
+3. How is HIVE different from RDBMS? Does hive support ACID 
+transactions. If not then give the proper reason.
+
+RDBMS is a subset of DBMS. A relational database refers to a database that stores data in a structured format using rows and columns and that structured form is known as table.
+Hive is a data warehouse software system that provides data query and analysis. 
+RDBMS used to maintain databases and hive used to maintain the warehouses. Schema is fixed in RDBMS and schema will vary in Hive.
+
+Hive supports all ACID properties which enable atomicity of operations at the row level, which allows a Hive client to read from a partition or table and simultaneously, another Hive client can add rows to the same partition or table.
+
+4. Explain the hive architecture and the different components of a Hive architecture?
+
+Hive architecture is made up of below components.
+* Hive Client ( Thrift Server, JDBC Server,ODBC server)
+* Hive Services ( Hive Driver -->MetaStore )
+* Processing and resource management ( MapReduce ) 
+* HDFS - Distributed storage system.
+
+5. Mention what Hive query processor does? And Mention what are the 
+components of a Hive query processor?
+
+Ans: Hive query processor convert graph of MapReduce jobs with the execution time framework. So that the jobs can be executed in the order of dependencies.
+
+Components of a Hive Query Processor:
+
+Parse and Semantic Analysis (ql/parse)
+Metadata Layer (ql/metadata)
+Type Interfaces (ql/typeinfo)
+Sessions (ql/session)
+Map/Reduce Execution Engine (ql/exec)
+Plan Components (ql/plan)
+Hive Function Framework (ql/udf)
+Tools (ql/tools)
+Optimizer (ql/optimizer)
+
+6. What are the three different modes in which we can operate Hive?
+
+Hive has three different modes.
+1. Local Mode - In Hive local mode, Map Reduce jobs related to Hive run locally on a user machine. This is the default mode in which Hadoop uses local file system.
+2. MapReduce mode or distributed mode - Hive as well as Hadoop is running in a fully distributed mode. NameNode, DataNode, JobTracker, TaskTracker etc run on different machines in this mode.
+3. Pseudo distributed mode. - This is the mode used by developers to test the code before deploying to production. In this mode, all the daemons run on same virtual machine. With this mode, we can quickly write scripts and test on limited data sets.
+
+ 7. Features and Limitations of Hive.
+
+Ans: 
+
+Features of Hive:
+* Open-source: Apache Hive is an open-source tool. We can use it free of cost.
+* Query large datasets: Hive can query and manage huge datasets stored in Hadoop Distributed File System.
+* Multiple-users: Multiple users can query the data using Hive Query Language simultaneously.
+* Apache Hive supports partitioning and bucketing of data at the table level to improve performance.
+* Apache Hive supports external tables. This allows us to process data without actually storing data in HDFS.
+
+Limitations of Hive:
+* Hive is not designed for the OLTP (Online transaction processing). We can use it for OLAP.
+* It does not offer real-time queries.
+* It provides limited subquery support.
+* Latency of hive is generally high.
+* Hive uses HIVE query language to query structure data which is easy to code.
+
+8. How to create a Database in HIVE?
+
+Ans: Inorder to create a database in hive, we should open the Hive shell.
+* We will be using the HQL ( Hive query language) in hive shell.
+Syntax: create database databasename;
+eg: create database hive_class;
+
+9. How to create a table in HIVE?
+Ans: Open the hiveshell and enter the below code to create the tables.
+
+Query: Use database hive_class;
+
+create table sampletable1
+(
+id int,
+name string,
+location string
+)
+row format delimited
+fields terminated by ",";
+
+#loading data into the table:
+
+load data local inpath "file:///path_____" into table sampletable1;
+
+10.What do you mean by describe and describe extended and describe 
+formatted with respect to database and table
+
+Describe:
+Describe statement gives the basic information such column names and it's data types of a table.
+eg. describe sampletable1;
+
+describe extended:
+describe extended gives the detailed table information such as schema of the table,warehouse info, db info etc.
+
+Describe formatted:
+
+Describe formmated retrieves the details information such as schema, table information, table parameters, storage information, storage desc params, table creation date, type of table etc.
+
+11.How to skip header rows from a table in Hive?
+Ans:
+We can skip the headers by using the below commands.
+
+create table table name
+(
+parameters
+)
+tblproperties("skip.header.line.count" = "1");
+
+12.What is a hive operator? What are the different types of hive operators?
+
+The HiveQL operators are operators facilite to perform arithmetic and relational operations. 
+
+Types of operators are:
+* Arithmetic ( A+B,A-B,A*B,A/B,A%B,A&B,A^B,A`B,A|B)
+* Relational (A=B,A <> B, A !=B,A<B,A>B,A<=B.A>=B,A IS NULL, A IS NOT NULL )
+* Logical ( A AND B, A && B, A OR B, A||B, NOT A, !A )
+* Complex operators ( A[n], M[Key], S.x )
+
+13.Explain about the Hive Built-In Functions.
+
+Types of operators are:
+* Arithmetic ( A+B,A-B,A*B,A/B,A%B,A&B,A^B,A`B,A|B,A LIKE B, A RLIKE B, A REGEXP B)
+* Relational (A=B,A <> B, A !=B,A<B,A>B,A<=B.A>=B,A IS NULL, A IS NOT NULL )
+* Logical ( A AND B, A && B, A OR B, A||B, NOT A, !A )
+* Complex operators ( A[n], M[Key], S.x )
+
+14. Write hive DDL and DML commands
+
+DDL Commands - CREATE, SHOW, DESCRIBE, USE, DROP, ALTER, TRUNCATE;
+DML Commands - LOAD, SELECT, INSERT,DELETE, UPDATE, EXPORT, IMPORT.
+
+15.Explain about SORT BY, ORDER BY, DISTRIBUTE BY and CLUSTER BY in Hive.
+
+SORT BY: 
+* Sort by is an local sorting.
+* Explicitly we can mention the reduces to set the jobs.
+* Data will be categorized into reducers and it sorts the data on each reducer locally.
+
+ORDER BY:
+* Order by arranges data globally.
+* Entire data will be considered as a single reducer, even if we set the reducers manually.
+* Limit can be used to minimize sort time.
+
+DISTRIBUTE BY:
+
+* DISTRIBUTE BY clause is used to distribute the input rows among reducers.
+* It ensures that all rows for the same key columns are going to the same reducer.
+* The DISTRIBUTE BY clause does not sort the data either at the reducer level or globally.
+* Also, the same key values might not be placed next to each other in the output dataset.
+
+CLUSTER BY:
+
+* CLUSTER BY clause is a combination of DISTRIBUTE BY and SORT BY clauses together. That means the output of the CLUSTER BY clause is equivalent to the output of DISTRIBUTE BY + SORT BY clauses.
+* The output of the CLUSTER BY clause is sorted at the reducer level. As a result, we can get N number of sorted output files where N is the number of reducers used in the query processing. 
+
+16.Difference between "Internal Table" and "External Table" and Mention when to choose “Internal Table” and “External Table” in Hive?
+
+Internal Table:
+
+* Internal table is also known as managed table. It is the default table in hive without specifying as external keyword. 
+* By default, an internal table will be created in a folder path similar to /user/hive/warehouse directory of HDFS. 
+* We can override the default location by the location property during table creation.
+* If we drop the managed table or partition, the table data and the metadata associated with that table will be deleted from the HDFS.
+
+External Table:
+
+* While creating the external table, External keyword will be used.
+* Hive does not manage the data of the External table.
+* External tables are stored outside the warehouse directory. They can access data stored in sources such as remote HDFS locations or Azure Storage Volumes.
+* Whenever we drop the external table, then only the metadata associated with the table will get deleted, the table data remains untouched by Hive.
+
+17.Where does the data of a Hive table get stored?
+
+* Internal table data will be stored in Hive warehouse,  a folder path similar to /user/hive/warehouse directory of HDFS.
+* External tables are stored outside the warehouse directory. They can access data stored in sources such as remote HDFS locations or Azure Storage Volumes.
+
+18.Is it possible to change the default location of a managed table?
+
+Yes, we can change the location of a table by s[ecifying the clause -Location while creating the table.
+eg.
+Create table employee
+( id, int, name string, salary string )
+row format delimited fields terminated by ','
+location "/tmp/hive/data/weather';
+
+19.What is a metastore in Hive? What is the default database provided by Apache Hive for metastore?
+
+
+
+
+
+
+
