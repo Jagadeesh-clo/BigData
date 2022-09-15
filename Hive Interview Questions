@@ -200,6 +200,43 @@ The Hive metastore is simply a relational database. It stores metadata related t
 When you create a new Hive table, the information related to the schema (column names, data types) is stored in the Hive metastore relational database.
 Derby is the default metastore in hive which supports only one user
 
+20.Why does Hive not store metadata information in HDFS?
+
+Ans - Hive stores metadata information in the metastore using RDBMS instead of HDFS. The reason for choosing RDBMS is to achieve low latency as HDFS read/write operations are time consuming processes.
+
+21.What is a partition in Hive? And Why do we perform partitioning in Hive?
+
+* It is a way of dividing a table into related parts based on the values of partitioned columns such as date, city, and department. Using partition, it is easy to query a portion of the data.
+* Partitioning helps to reduce the latency and increase the query processing time.
+* It increase the performance of the query while processing.
+
+22.What is the difference between dynamic partitioning and static partitioning?
+
+Static :
+* We need to manually create each partition before inserting data into a partition
+* We need to know all partitions in advance. So it is suitable for use cases where partitions are defined well ahead and are small in number.
+eg: 
+hive> Create TABLE sales ( id int, name string )
+PARTITIONED BY (country="US") ;
+
+Dynamic :
+* When we don't know ,how any distinct values in a table, Partitions will be created dynamically based on input data to the table.
+* Dynamic partitions are suitable when we have lot of partitions and we can not predict in advance new partitions ahead of time.
+
+eg: 
+hive> Create TABLE sales ( id int, name string )
+PARTITIONED BY (country string);
+
+23.How do you check if a particular partition exists?
+
+We can able to check using the below query.
+hive> show partitions tablename;
+
+24.How can you stop a partition form being queried?
+
+We can restrict by putting Hive into strict mode using the set hive. mapred. mode=strict command. In this mode, when users submit a query that would result in a full table scan.
+
+25. 
 
 
 
