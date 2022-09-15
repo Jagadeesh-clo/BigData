@@ -254,8 +254,25 @@ FIELDS TERMINATED BY ',';
 
 Bucketing can be enabled using the command, set hive.enforce.bucketing = true;
 
+27.How does bucketing help in the faster execution of queries?
 
+Bucketing improves performance by shuffling and sorting data prior to downstream operations such as table joins. 
+The tradeoff is the initial overhead due to shuffling and sorting, but for certain data transformations, this technique can improve performance by avoiding later shuffling and sorting.
 
+28.How to optimise Hive Performance? Explain in very detail
+
+Hive performance can be optimized by the below 7 types.
+* Vectorization
+* Partitioning
+* Tex-Execution engine
+* Cost Based
+* Indexing
+* Bucketing
+* ORC file format.
+
+29. What is the use of Hcatalog?
+
+HCatalog is a tool that allows you to access Hive metastore tables within Pig, Spark SQL, and/or custom MapReduce applications. 
 
 
 
