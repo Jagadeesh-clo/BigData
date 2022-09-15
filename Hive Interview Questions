@@ -236,8 +236,23 @@ hive> show partitions tablename;
 
 We can restrict by putting Hive into strict mode using the set hive. mapred. mode=strict command. In this mode, when users submit a query that would result in a full table scan.
 
-25. 
+25.Why do we need buckets? How Hive distributes the rows into buckets?
 
+Bucketing in hive is the concept of breaking data down into ranges, which are known as buckets, to give extra structure to the data so it may be used for more efficient queries.
+eg:
+CREATE TABLE zipcodes(
+RecordNumber int,
+Country string,
+City string,
+Zipcode int)
+PARTITIONED BY(state string)
+CLUSTERED BY (Zipcode) INTO 32 BUCKETS
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ',';
+
+26.In Hive, how can you enable buckets?
+
+Bucketing can be enabled using the command, set hive.enforce.bucketing = true;
 
 
 
