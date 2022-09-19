@@ -274,6 +274,177 @@ Hive performance can be optimized by the below 7 types.
 
 HCatalog is a tool that allows you to access Hive metastore tables within Pig, Spark SQL, and/or custom MapReduce applications. 
 
+30. Explain about the different types of join in Hive.
+
+There are 4 types of optimized joins in hive.
+
+1. Reduce side join: 
+* Whole join will be happening from the reducer side.
+* This join can be applied when both datasets are small.
+* To enable this join perform the below command in hive shell
+
+set hive.autoi.convert.join = False
+
+2. Map side join or Broadcast join:
+
+* set hive.auto.convert.join = true;
+
+3. Bucket Map Join:
+
+* This joins will be used when both datasets size is very huge.
+* to enable this join, perform the below commands in hive shell.
+
+set hive.auto.convert.join = true;
+set hive.optimize.bucketmapjoin = true;
+
+4. Sorted Merge Join:
+
+In Hive, while each mapper reads a bucket from the first table and the corresponding bucket from the second table.
+In SMB join. Basically, then we perform a merge sort join feature. Moreover, we mainly use it when there is no limit on file or partition or table join.
+
+to perform this join, please execute the below commands in hive shell.
+
+set hive.enforce.sortmergebucketjoin = false;
+set hive.auto.convert.setmerge.join = true;
+set hive.optimize.bucketmapjoin = true;
+set hive.optimize.bucketmapjoin.sortedmerge = true;
+
+31.Is it possible to create a Cartesian join between 2 tables, using Hive?
+
+Yes, possible. Cross join, also known as Cartesian product, is a way of joining multiple tables in which all the rows or tuples from one table are paired with the rows and tuples from another table.
+
+32.Explain the SMB Join in Hive?
+
+In Hive, while each mapper reads a bucket from the first table and the corresponding bucket from the second table.
+In SMB join. Basically, then we perform a merge sort join feature. Moreover, we mainly use it when there is no limit on file or partition or table join.
+
+to perform this join, please execute the below commands in hive shell.
+
+set hive.enforce.sortmergebucketjoin = false;
+set hive.auto.convert.setmerge.join = true;
+set hive.optimize.bucketmapjoin = true;
+set hive.optimize.bucketmapjoin.sortedmerge = true;
+
+
+33.What is the difference between order by and sort by which one we should 
+use?
+
+* Order by arrangees data globally.
+* When we apply ORDER BY, whole data will be considered as a single reducer and it will sort the data as per the request ( Ascending or DEscending ).
+* Entore data will come into a single reducer even if we set the reducers manually.
+
+* Sort by arranges the data locally.
+* Which means, data will be divided into a no of reducers and data will be sorted for each reducer.
+* Dta will be sorted by the no of reducers automatically or else we can set the reducers manually.
+
+set mapreduce.job.reduces = 3;
+
+34.What is the usefulness of the DISTRIBUTED BY clause in Hive?
+
+DISTRIBUTE BY clause is used to distribute the input rows among reducers. It ensures that all rows for the same key columns are going to the same reducer. So, if we need to partition the data on some key column, we can use the DISTRIBUTE BY clause in the hive queries.
+
+35.How does data transfer happen from HDFS to Hive?.
+
+* Using Insert Command. We can load data into a table using Insert command in two ways. One Using Values command and other is using queries.
+
+INSERT OVERWRITE TABLE my_table_backup PARTITION (ds) SELECT * FROM my_table WHERE ds = ds;
+
+* Using Load. You can load data into a hive table using Load statement in two ways.
+LOAD DATA INPATH ‘hdfs_file’ INTO TABLE tablename; command, it looks like it is moving the hdfs_file to hive/warehouse dir.
+
+36.Wherever (Different Directory) I run the hive query, it creates a new metastore_db, please explain the reason for it?
+
+When running Hive in embedded mode, it creates a local metastore. When you run the query, it first checks whether a metastore already exists or not.
+The property javax.jdo.option.ConnectionURL defined in the hive-site.xml has a default value jdbc: derby: databaseName=metastore_db; create=true.
+
+37.What will happen in case you have not issued the command: ‘SET hive.enforce.bucketing=true;’ before bucketing a table in Hive?
+
+If we do not set this property in Hive Session, we have to manually convey same information to Hive that, number of reduce tasks to be run (for example in our case, by using set mapred.reduce.tasks=32) 
+
+38.Can a table be renamed in Hive?
+
+Yes, we can rename the table using the below commands.
+
+ALTER TABLE db_name.test_1 RENAME TO db_name.test_2;
+
+39.Write a query to insert a new column(new_col INT) into a hive table at a position before an existing column (x_col)
+
+ALTER TABLE h_table CHANGE COLUMN new_col INT BEFORE x_col ;
+
+40.What is serde operation in HIVE?
+
+The SerDe interface allows you to instruct Hive about how a record should be processed. 
+A SerDe is a combination of a Serializer and a Deserializer. Hive uses SerDe (and FileFormat) to read and write the table's row.
+
+41.Explain how Hive Deserializes and serialises the data?
+
+*Serialization:
+
+--Converting the data into the bytes is called serialization. We cannot read the serialized data.
+
+The file will be stored in the different formats like , Parquet, ORC, AVRO etc..
+
+create table table name ( values....., serde ) stored as parquet;
+
+
+*Deserialization:
+
+--Converting the serailized data ( bytes ) into its original format is called deserialization.
+
+We can retrieve the data using select command. select * from table_name;
+
+42.Write the name of the built-in serde in hive.
+
+CSV Serde:
+row format serde "org.apache.hadoop.hive.serde2.OpenCSVSerde"
+
+JSON Serde:
+row format serde "org.apache.hive.hcatalog.data.JsonSerde"
+
+43.What is the need of custom Serde?.
+
+Depending on the nature of data the user has, the inbuilt SerDe may not satisfy the format of the
+data. SO users need to write their own java code to satisfy their data format requirements.
+
+
+44.Can you write the name of a complex data type(collection data types) in 
+Hive?
+
+Complex data types are
+
+Array, Map, Struct, Union.
+
+45.Can hive queries be executed from script files? How?
+
+Yes, script file will be executed in hive.
+
+* Create a file with the format of .sql and save it in a location.
+* open the file and run the queries and save it in a location.
+* Run the command "hive -f path/" to execute the file.
+* While executing the script, make sure that the entire path of the location of the Script file is present.
+
+46.What are the default record and field delimiter used for hive text files?
+
+The default record delimiter is − \n
+And the filed delimiters are − \001,\002,\003
+
+47.How do you list all databases in Hive whose name starts with s?
+
+show databases like "s%";
+
+48.What is the difference between LIKE and RLIKE operators in Hive?
+
+LIKE is an operator similar to LIKE in SQL. We use LIKE to search for string with similar text.
+
+E.g. user_name LIKE ‘%Smith’
+
+
+
+
+
+
+
+
 
 
 
