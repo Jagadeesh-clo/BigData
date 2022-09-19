@@ -450,8 +450,9 @@ Syntax - ALTER TABLE table_name CHANGE oldcolumnname new_column_name data_type;
 
 ALTER TABLE employee CHANGE e_id e_id INT;
 
+50.How will you convert the string ’51.2’ to a float value in the particular column?
 
-
+SELECT col1, cast('51.2' as float) from sample_table;
 
 
 
