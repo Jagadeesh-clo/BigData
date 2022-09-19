@@ -438,6 +438,21 @@ LIKE is an operator similar to LIKE in SQL. We use LIKE to search for string wit
 
 E.g. user_name LIKE ‘%Smith’
 
+RLIKE is an operator which used to set multiple conditions in a single function.
+
+E.g : select * from table_name where name RLIKE '(JAI|SREE|RAM')'; 
+
+which displays all the names matches with the string "JAI OR SREE OR RAM";
+
+49.How to change the column data type in Hive?
+
+Syntax - ALTER TABLE table_name CHANGE oldcolumnname new_column_name data_type;
+
+ALTER TABLE employee CHANGE e_id e_id INT;
+
+
+
+
 
 
 
