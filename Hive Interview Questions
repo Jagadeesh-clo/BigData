@@ -454,6 +454,43 @@ ALTER TABLE employee CHANGE e_id e_id INT;
 
 SELECT col1, cast('51.2' as float) from sample_table;
 
+51.What will be the result when you cast ‘abc’ (string) as INT?
+
+select cast('abc' as int);
+
+52.What does the following query do?
+a. INSERT OVERWRITE TABLE employees
+b. PARTITION (country, state)
+c. SELECT ..., se.cnty, se.st
+d. FROM staged_employees se;
+
+Ans:
+This will create a dynamic partitiong based on the country and state column from the employee table.
+
+Data will be stored in the warehouse as a
+"/country/state1"
+"/Country/State2"
+"/Country/State3"
+
+53.Write a query where you can overwrite data in a new table from the existing table.
+
+from sales_data_v1 insert overwrite table sales_data_v2 select *;
+or 
+insert overwrite table sales_data_v2 select * from sales_data_v1;
+
+54.What is the maximum size of a string data type supported by Hive? Explain how Hive supports binary formats.
+
+The maximum size of a string data type supported by Hive is 2 GB.
+
+supports the binary format sequence files, ORC files, Avro data files, text files, Custom INPUTFORMAT and OUTPUTFORMAT and Parquet files. Sequence file: It is a splittable, compressible, and row-oriented file with a general binary format.
+
+55. What File Formats and Applications Does Hive Support?
+
+Hive Different File Formats:TextFile, SequenceFile, RCFile,Custom INPUTFORMAT and OUTPUTFORMAT, AVRO, ORC,Parquet. Apache Hive supports several familiar file formats used in Apache Hadoop.
+
+
+
+
 
 
 
