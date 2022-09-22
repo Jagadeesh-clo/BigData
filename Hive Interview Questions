@@ -488,6 +488,55 @@ supports the binary format sequence files, ORC files, Avro data files, text file
 
 Hive Different File Formats:TextFile, SequenceFile, RCFile,Custom INPUTFORMAT and OUTPUTFORMAT, AVRO, ORC,Parquet. Apache Hive supports several familiar file formats used in Apache Hadoop.
 
+56.How do ORC format tables help Hive to enhance its performance?
+
+The ORC format improves query performance also by the way it stores data in a file. Data is stored in a columnar format and columns that are not needed in a query can be skipped, thus leading to better performance.
+
+57.How can Hive avoid mapreduce while processing the query?
+
+-->select * from table;
+This query needs only read data from HDFS. So far neither requires any map or reduce phases.
+
+-->select * from table where color in ('RED','WHITE','BLUE')
+This query requires only a map only, there is no reduce phase. There is no aggregation function of any kind.
+Here we are filtering to collect records that are RED, WHITE, or BLUE.
+
+-->select count(1) from table;
+This query requires only a reduce phase. No mapping required because we are counting all the records in the table.
+If we want to count across elements then we will be adding a map phase prior to the reduce phase. See below:
+
+58.What is view and indexing in hive?
+
+Apache Hive View is a searchable object in a database which we can define by the query. However, we can not store data in the view. Still, some refer to as a view as “virtual tables”.
+
+Indexing, we can say these are pointers to particular column name of a table. However, the user has to manually define the Hive index
+Basically, we are creating the pointer to particular column name of the table, wherever we are creating Hive index.
+By using the Hive index value created on the column name, any Changes made to the column present in tables are stored.
+
+59.Can the name of a view be the same as the name of a hive table?
+
+No, We can create the view as different from the actual table. It is not an mandatory to keep the view name as same as the table name.
+
+60.What types of costs are associated in creating indexes on hive tables?
+
+Basically, there is a processing cost in arranging the values of the column on which index is created since Indexes occupies.
+
+61.Give the command to see the indexes on a table.
+
+hive> Show index on table_name;
+
+62. Explain the process to access subdirectories recursively in Hive queries.
+
+To process directories recursively in Hive, we need to set below two commands in hive session. These two parameters work in conjunction.
+
+hive> Set mapred.input.dir.recursive=true;
+hive> Set hive.mapred.supports.subdirectories=true;
+Now hive tables can be pointed to the higher level directory. This is suitable for a scenario where the directory structure is as following: /data/country/state/city
+
+
+
+
+
 
 
 
