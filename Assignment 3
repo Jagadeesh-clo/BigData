@@ -1,0 +1,101 @@
+1. Download vechile sales data -> https://github.com/shashank-mishra219/Hive-Class/blob/main/sales_order_data.csv
+
+2. Store raw data into hdfs location
+
+Ans:
+hadoop fs -copyFromLocal /data/hive_class/sales_order_data.csv /tmp/hive_class;
+
+3. Create a internal hive table "sales_order_csv" which will store csv data sales_order_csv .. make sure to skip header row while creating table
+
+create table sales_order_data_csv
+(
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH float,
+ORDERLINENUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE string,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string
+)
+row format delimited
+fields terminated by ','
+tblproperties("skip.header.line.count"="1")
+;
+
+4. Load data from hdfs path into "sales_order_csv" 
+
+load data inpath "hdfs:///tmp/hive_class/sales_order_data.csv" into table sales_order_data_csv;
+
+5. Create an internal hive table which will store data in ORC format "sales_order_orc"
+
+create table sales_order_data_csv_orc
+(
+ORDERNUMBER int,
+QUANTITYORDERED int,
+PRICEEACH float,
+ORDERLINENUMBER int,
+SALES float,
+STATUS string,
+QTR_ID int,
+MONTH_ID int,
+YEAR_ID int,
+PRODUCTLINE string,
+MSRP int,
+PRODUCTCODE string,
+PHONE string,
+CITY string,
+STATE string,
+POSTALCODE string,
+COUNTRY string,
+TERRITORY string,
+CONTACTLASTNAME string,
+CONTACTFIRSTNAME string,
+DEALSIZE string
+)
+stored as orc;
+
+6. Load data from "sales_order_csv" into "sales_order_orc"
+
+from sales_order_data_csv insert overwrite table sales_order_csv_orc select *;
+
+a. Calculatye total sales per year.
+
+Ans: hive>select year_id, sum(sales) from sales_data_ORC group by year_id;
+
+b. Find a product for which maximum orders were placed
+
+Ans:-hive> select productline, sum(qtyordered) as Total_Orders from sales_data_ORC group by productline order by Total_Orders desc limit 1;
+
+c. Calculate the total sales for each quarter
+
+Ans:-hive> select qtr_id, sum(sales) from sales_data_ORC group by qtr_id;
+
+d. In which quarter sales was minimum
+
+Ans:-hive> select qtr_id, sum(sales) as total_sales from sales_data_ORC group by qtr_id order by total_sales asc limit 1;;
+
+e. In which country sales was maximum and in which country sales was minimum
+ 
+Ans:-hive> select country, sum(sales) as total_sales from sales_data_ORC group by country order by total_sales desc;
+
+f. Calculate quartelry sales for each city
+
+Ans:-hive> select city, qtr_id, sum(sales) as total sales from sales_data_ORC group by city,qtr_id;
+
+g. Find a month for each year in which maximum number of quantities were sold Footer.
+
+Ans:-hive> select year_id, month_id,, sum(qtyordered) as total_sales from sales_data_ORC group by year_id, month_id order by year_id, total_sales desc;
