@@ -1,0 +1,56 @@
+1. Create a schema based on the given dataset
+
+Ans: create table AgentLoggingReport ( SNO int, Agent_Name string, Date string, Login_time string, Logout_Time string, Duration string)
+row format delimited
+fields terminated by ','
+TBLPROPERTIES("skip.header.line.count" = "1");
+
+2. Dump the data inside the hdfs in the given schema location.
+
+Ans:
+hadoop fs -copyFromLocal /home/cloudera/data/AgentLoggingReport.csv /tmp/hive/hive_class/;
+
+3. List of all agents' names. 
+
+Ans:
+load data local "hdfs:///tmp/hive/hive_class/AgentLoggingReport.csv" into table AgentLoggingReport;
+
+4. Find out agent average rating.
+
+Ans:
+select SNO, Agent_Name from AgentLoggingReport;
+
+5. Total working days for each agents 
+
+Ans:
+select Agent_name, count(distinct date) as Working_days from AgentLoggingReport group by agent_name;
+
+6. Total query that each agent have taken 
+
+Ans:
+select agent_name, sum(total_chats) as total_queries_taken from agentperformer group by agent_name;
+
+7. Total Feedback that each agent have received 
+
+Ans:
+select agent_name, sum(total_feedback) as Total_Feedback from agentperformer group by agent_name;
+
+8. Agent name who have average rating between 3.5 to 4 
+
+Ans:
+select agent_name, AVG(avg_rating) as AVG_Rating from agentperformer where Avg_Rating between 3.5 and 4 group by agent_name;
+
+9. Agent name who have rating less than 3.5 
+
+Ans:
+select agent_name, AVG(avg_rating) as AVG_Rating from agentperformer where Avg_Rating < 3.5 group by agent_name;
+ 
+10. Agent name who have rating more than 4.5 
+
+Ans:
+select agent_name, AVG(avg_rating) as AVG_Rating from agentperformer where Avg_Rating > 4.5 group by agent_name;
+
+11. How many feedback agents have received more than 4.5 average
+
+Ans:
+select agent_name, COUNT(total_feedback) as FeedBack from agentperformer where Avg_Rating > 4.5 group by agent_name;
